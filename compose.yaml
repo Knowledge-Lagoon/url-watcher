@@ -1,0 +1,40 @@
+services:
+
+  db:
+    image: postgres:16
+    container_name: watcher-db
+    environment:
+      POSTGRES_DB: watcher
+      POSTGRES_USER: watcher
+      POSTGRES_PASSWORD: watcher123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  worker:
+    build: ./worker
+    container_name: watcher-worker
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_NAME: watcher
+      DB_USER: watcher
+      DB_PASSWORD: watcher123
+
+  dashboard:
+    build: ./dashboard
+    container_name: watcher-ui
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_NAME: watcher
+      DB_USER: watcher
+      DB_PASSWORD: watcher123
+    ports:
+      - "8080:5000"
+
+volumes:
+  postgres_data:
