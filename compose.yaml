@@ -34,7 +34,7 @@ services:
       DB_USER: watcher
       DB_PASSWORD: watcher123
     ports:
-      - "8080:5000"
+      - "8888:5000"
 
 volumes:
   postgres_data:
